@@ -10,10 +10,6 @@ const connectDB = async () => {
     }
 };
 
-// E12qLNHNP6lnfGfK
-
-// agadaunogwu04_db_user
-
 // Connection event listeners
 mongoose.connection.on("disconnected", () => {
     console.log("MongoDB Disconnected");

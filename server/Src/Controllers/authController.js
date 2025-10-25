@@ -11,11 +11,13 @@ const createWebToken = (userId) => {
 };
 
 // Register User
-export const registerUser = catchAsync(async (req, res, next) => {
+const registerUser = catchAsync(async (req, res, next) => {
     const { userName, email, password } = req.body;
 
     if (!userName) return next(new AppError('Kindly provide username', 400));
+
     if (!email) return next(new AppError('Kindly provide your email', 400));
+
     if (!password || password.length < 6)
         return next(new AppError('Password must be at least 6 characters', 400));
 
@@ -36,7 +38,7 @@ export const registerUser = catchAsync(async (req, res, next) => {
 });
 
 // User login
-export const loginUser = catchAsync(async (req, res, next) => {
+const loginUser = catchAsync(async (req, res, next) => {
     const { userName, password } = req.body;
 
     if (!userName || !password) {
@@ -104,4 +106,4 @@ const getMe = catchAsync (async (req, res, next) => {
     })
 })
 
-export {registerUser, loginUser, getMe}
+export {registerUser, loginUser, getMe, authMiddleWare}
