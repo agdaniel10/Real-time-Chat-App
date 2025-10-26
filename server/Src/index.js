@@ -28,17 +28,17 @@ const io = new Server(server, {
 
 // Socket Logic
 io.on('connection', (socket) => {
-    console.log('User connected', socket.id)
+    console.log('User connected:', socket.id)
 
-    socket.on('disconnected', () => {
-        console.log('user disconnected', socket.id)
+    socket.on('disconnect', () => {
+        console.log('User disconnected:', socket.id)
     })
 })
 
 // Routes
 app.use('/api/auth', authRouter)
 
-app.listen(3000, () => {
-    console.log('Sever running on port 3000')
-})
 
+server.listen(3000, () => {
+    console.log('Server running on port 3000')
+})

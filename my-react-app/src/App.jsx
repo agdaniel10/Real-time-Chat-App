@@ -1,11 +1,12 @@
 import './App.css'
+import Chat from './component/chat'
 
 function App() {
 
   return (
     <>
     <div>
-      the grace of God is about to take over
+      <Chat />
     </div>
     </>
   )
