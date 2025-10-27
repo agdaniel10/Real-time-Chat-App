@@ -2,40 +2,58 @@ import { useEffect, useState } from "react";
 import socket from "../socket";
 
 export default function Chat() {
+  const [username, setUsername] = useState("");
+  const [isJoined, setIsJoined] = useState(false);
+
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
 
   useEffect(() => {
-    // Runs when component mounts
-    socket.on("connect", () => {
-      console.log("Connected:", socket.id);
-    });
-
-    // Listen for messages from the backend
     socket.on("receive_message", (data) => {
-      setChat((prev) => [...prev, data]); 
+      setChat((prev) => [...prev, data]);
     });
 
-    // Cleanup when component unmounts
     return () => {
       socket.off("receive_message");
     };
   }, []);
 
+  const joinChat = () => {
+    if (username.trim() !== "") {
+      setIsJoined(true);
+    }
+  };
+
   const sendMessage = () => {
-    const data = { text: message };
+    const data = { 
+      sender: username, 
+      text: message 
+    };
     socket.emit("send_message", data);
     setMessage("");
   };
 
-  
+  if (!isJoined) {
+    return (
+      <div>
+        <h2>Enter Username</h2>
+        <input 
+          value={username} 
+          onChange={(e) => setUsername(e.target.value)} 
+          placeholder="Your name..."
+        />
+        <button onClick={joinChat}>Join Chat</button>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h2>Chat</h2>
 
       <div style={{ border: "1px solid black", padding: "10px", height: "200px", overflowY: "scroll" }}>
         {chat.map((msg, index) => (
-          <p key={index}>{msg.text}</p>
+          <p key={index}><b>{msg.sender}:</b> {msg.text}</p>
         ))}
       </div>
 
@@ -43,11 +61,7 @@ export default function Chat() {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type message..."
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            sendMessage()
-          }
-        }}
+        onKeyDown={(e) => e.key === "Enter" && sendMessage()}
       />
 
       <button onClick={sendMessage}>Send</button>

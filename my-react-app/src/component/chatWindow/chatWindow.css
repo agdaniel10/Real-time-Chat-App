@@ -1,0 +1,89 @@
+.chat-window-main-container {
+    width: 75%;
+    height: 100vh;
+    position: relative;
+}
+
+.chat-window-header {
+    background-color: #37373A;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.cw-profile {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+}
+
+.userName-display {
+    color: white;
+} 
+
+.online {
+    color: lightgreen;
+}
+
+.cw-call {
+    display: inline-flex;
+    gap: 20px;
+}
+
+.call {
+    color: white;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.prof-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.message-input-send-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.message-input {
+    width:95%;
+    outline: none;
+    border: none;
+    padding: 15px;
+    font-family: "Raleway", sans-serif;
+    background-color: #37373A;
+    color: white;
+}
+
+.send-btn {
+    width: 4.7%;
+    padding: 15px;
+    font-size: 15px;
+    background-color: #1BC815;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: white;
+}
+
+.send-btn ion-icon {
+    font-size: 15px;
+}
+
+.p {
+    color:  white;
+}

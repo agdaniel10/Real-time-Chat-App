@@ -1,12 +1,13 @@
 import './App.css'
-import Chat from './component/chat'
+import ChatPage from './Pages/chatPage'
+// import Chat from './component/chat'
 
 function App() {
 
   return (
     <>
     <div>
-      <Chat />
+      <ChatPage />
     </div>
     </>
   )
