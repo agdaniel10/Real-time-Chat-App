@@ -1,4 +1,5 @@
 import './chatList.css'
+import Search from '../../UI/Search/Search'
 
 const ChatList = () => {
 
@@ -9,6 +10,7 @@ const ChatList = () => {
 
     return (
         <div className='chat-list-container'>
+            <Search />
             <h3>Messages</h3>
 
             <div>
