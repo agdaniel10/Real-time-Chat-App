@@ -25,12 +25,10 @@ export default function Chat() {
   const sendMessage = () => {
     const data = { text: message };
     socket.emit("send_message", data);
-    setChat((prev) => [...prev, data]); 
     setMessage("");
   };
 
   
-
   return (
     <div>
       <h2>Chat</h2>
@@ -45,6 +43,11 @@ export default function Chat() {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type message..."
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            sendMessage()
+          }
+        }}
       />
 
       <button onClick={sendMessage}>Send</button>
