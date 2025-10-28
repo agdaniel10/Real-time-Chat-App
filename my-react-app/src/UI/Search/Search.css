@@ -1,3 +1,13 @@
+.search-main-container {
+    border-bottom: 1px solid #37373A ;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+
+}
+
 .search-container {
   position: relative;
   width: 100%;

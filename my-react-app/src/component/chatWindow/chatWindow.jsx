@@ -31,6 +31,7 @@ const ChatWindow = () => {
                 <div className='cw-call'>
                     <button className='call'><ion-icon name="call-outline"></ion-icon></button>
                     <button className='call'><ion-icon name="videocam-outline"></ion-icon></button>
+                    <button className='call-rotate'><ion-icon name="ellipsis-horizontal-outline"></ion-icon></button>
                 </div>
             </div>
 
@@ -50,9 +51,6 @@ const ChatWindow = () => {
                     <ion-icon name="send-outline"></ion-icon>
                 </button>
             </div>
-
-
-            <p>{message}</p>
         </div>
     )
 }

@@ -11,8 +11,11 @@ const ChatList = () => {
     return (
         <div className='chat-list-container'>
             <Search />
-            <h3>Messages</h3>
 
+            <div className='message'>
+                <h2>Messages</h2>
+            </div>
+            
             <div>
                 <ul>
                     {chats.map(chat => (

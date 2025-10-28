@@ -1,7 +1,17 @@
 .chat-list-container {
     display: flex;
-    align-items: center;
     flex-direction: column;
     width: 25%;
-    padding: 25px;
+    border-right: 1px solid #37373A;
+}
+
+.message {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+}
+
+.message h2{
+    color: white;
 }

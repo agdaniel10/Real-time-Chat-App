@@ -11,20 +11,23 @@ const Search = () => {
 
 
     return (
-        <div className='search-container'>
-            <span
-                className='search-icon'
-            >
-                <ion-icon name="search-outline"></ion-icon>
-            </span>
-            <input 
-                type="text" 
-                placeholder='Search...'
-                value={searchInput}
-                onChange={(e) => handleInputChange(e)}
-                className='search-input'
-            />
-        </div>
+
+        <div className='search-main-container'>
+            <div className='search-container'>
+                <span
+                    className='search-icon'
+                >
+                    <ion-icon name="search-outline"></ion-icon>
+                </span>
+                <input 
+                    type="text" 
+                    placeholder='Search or start a new chat'
+                    value={searchInput}
+                    onChange={(e) => handleInputChange(e)}
+                    className='search-input'
+                />
+            </div>
+         </div>
     )
 }
 

@@ -42,6 +42,17 @@
     cursor: pointer;
 }
 
+.call-rotate {
+        
+    color: white;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    cursor: pointer;
+    rotate: calc(90deg);
+}
+
 .prof-photo {
     width: 40px;
     height: 40px;
