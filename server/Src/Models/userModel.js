@@ -23,8 +23,16 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: ""
+    },
+
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 });
+
+// Create index for faster searches
+userSchema.index({ username: 'text' });
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {
