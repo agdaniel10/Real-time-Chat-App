@@ -1,13 +1,17 @@
-import catchAsync from '../Utils/catchAsync';
-import User from '../Models/userModel';
+import catchAsync from '../Utils/catchAsync.js';
+import User from '../Models/userModel.js';
 
-// Search UserName
 const searchUser = catchAsync(async (req, res, next) => {
     const { userName } = req.query;
-    const currentUserId = req.user._id;
+    const currentUserId = req.user?._id; 
 
-    if (!userName || userName.trim() === '') {
-        return res.status(200).json({ status: 'success', results: 0, data: [] });
+    // If no search query, return empty result
+    if (!userName || !userName.trim()) {
+        return res.status(200).json({
+            status: 'success',
+            results: 0,
+            data: []
+        });
     }
 
     const users = await User.find({
@@ -22,6 +26,6 @@ const searchUser = catchAsync(async (req, res, next) => {
         results: users.length,
         data: users
     });
-});;
+});
 
-export {searchUser};
+export { searchUser };

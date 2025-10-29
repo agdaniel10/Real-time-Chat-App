@@ -9,6 +9,13 @@ const ChatWindow = () => {
     const [chats, setChats] = useState([]);
 
     useEffect(() => {
+        const constainer = document.querySelector('.chat-messages-container')
+        if (constainer) {
+            constainer.scrollTop = constainer.scrollHeight;
+        }
+    }, [chats])
+
+    useEffect(() => {
         socket.on('receive_message', (data) => {
             if (data.senderId !== socket.id) {
                 setChats(prev => [...prev, { ...data, isSender: false }]);
@@ -24,9 +31,7 @@ const ChatWindow = () => {
     const sendMessage = () => {
         if (message.trim()) {
             const data = { text: message, senderId: socket.id };
-            // Add to your own chat as sender
             setChats(prev => [...prev, { ...data, isSender: true }]);
-            // Emit to socket without isSender flag
             socket.emit("send_message", data);
             setMessage('');
         }

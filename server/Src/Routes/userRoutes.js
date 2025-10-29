@@ -1,9 +1,8 @@
-import express from 'express'
-import { searchUser } from '../Controllers/userController'
-import { authMiddleWare } from '../Controllers/authController'
+import express from 'express';
+import { searchUser } from '../Controllers/userController.js';
 
-const userRouter = express.Router()
+const userRouter = express.Router();
 
-userRouter.post('/searchUserName',authMiddleWare, searchUser)
+userRouter.get('/searchUserName', searchUser);
 
 export default userRouter;

@@ -5,6 +5,7 @@ import { Server } from 'socket.io'
 import connectDB from './Config/database.js'
 import dotenv from "dotenv";
 import authRouter from './Routes/authRoutes.js';
+import userRouter from './Routes/userRoutes.js'
 dotenv.config();
 
 
@@ -42,6 +43,7 @@ io.on('connection', (socket) => {
 
 // Routes
 app.use('/api/auth', authRouter)
+app.use('/api/users', userRouter)
 
 
 server.listen(3000, () => {
