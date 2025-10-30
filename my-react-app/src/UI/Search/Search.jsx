@@ -5,7 +5,7 @@ import { useChat } from '../../Context/ChatContext';
 
 const Search = () => {
 
-    const {activeChat, setActiveChat} = useChat()
+    const {activeChat, setActiveChat, chats, addChat} = useChat()
 
     const BASE_URL = import.meta.env.VITE_API_BACKEND || "http://localhost:3000";
 
@@ -69,9 +69,10 @@ const Search = () => {
             unread: 0
         };
         
+        addChat(chatData)
         setActiveChat(chatData);
         setSearchInput(''); 
-        setSearchResults([]); 
+        setSearchResults([]);
     }
 
     return (
@@ -93,6 +94,16 @@ const Search = () => {
                 <div className='search-loading'>
                     <div className='loading-spinner'></div>
                     <span>Searching...</span>
+                </div>
+            )}
+
+            {chats.length < 0 && !loading && !hasSearched && searchInput.trim() === '' && (
+                <div className='empty-state'>
+                    <div className='empty-state-icon'>
+                        <ion-icon name="chatbubbles-outline"></ion-icon>
+                    </div>
+                    <p className='empty-state-text'>Search for users</p>
+                    <p className='empty-state-subtext'>Type a name to find people and start chatting</p>
                 </div>
             )}
 

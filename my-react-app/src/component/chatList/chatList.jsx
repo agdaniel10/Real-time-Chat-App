@@ -1,12 +1,10 @@
 import './chatList.css';
 import Search from '../../UI/Search/Search';
-import { chats } from '../../Data/chats';
 import { useChat } from '../../Context/ChatContext';
 
 const ChatList = () => {
 
-    const { activeChat, setActiveChat } = useChat();
-
+    const { activeChat, setActiveChat, chats } = useChat();
 
     const getInitials = (name) => {
         return name
@@ -19,12 +17,10 @@ const ChatList = () => {
 
     const handleChatClick = (chat) => {
         setActiveChat(chat);
-        // Add logic to open chat window
     };
 
     const handleNewChat = () => {
         console.log('Start new chat');
-        // Add logic to start new chat
     };
 
     return (
@@ -51,7 +47,7 @@ const ChatList = () => {
                         {chats.map(chat => (
                             <li 
                                 key={chat.id}
-                                className={`chat-item ${activeChat === chat.id ? 'active' : ''} ${chat.unread > 0 ? 'unread' : ''}`}
+                                className={`chat-item ${activeChat?.id === chat.id ? 'active' : ''} ${chat.unread > 0 ? 'unread' : ''}`}
                                 onClick={() => handleChatClick(chat)}
                             >
                                 <div className='chat-avatar'>
