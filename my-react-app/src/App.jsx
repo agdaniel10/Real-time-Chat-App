@@ -8,10 +8,6 @@ function App() {
 
   return (
     <>
-    {/* <div>
-      <ChatPage />
-    </div> */}
-
     <Router>
       <Routes>
         <Route path='/' element={<Login />}/>
