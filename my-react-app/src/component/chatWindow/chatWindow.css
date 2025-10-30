@@ -55,6 +55,64 @@
     scroll-behavior: smooth;
 }
 
+/* Existing styles remain the same, add these: */
+
+.prof-photo-container {
+    position: relative;
+}
+
+.prof-initials {
+    background: linear-gradient(135deg, #1BC815 0%, #17a511 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.header-online-indicator {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: #1BC815;
+    border: 2px solid #37373A;
+    border-radius: 50%;
+    bottom: 2px;
+    right: 2px;
+}
+
+/* No chat selected state */
+.no-chat-selected {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    color: #8e8e93;
+    padding: 40px;
+}
+
+.no-chat-icon {
+    font-size: 80px;
+    color: #37373A;
+    margin-bottom: 24px;
+}
+
+.no-chat-selected h3 {
+    color: #e5e5e7;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+}
+
+.no-chat-selected p {
+    color: #8e8e93;
+    font-size: 14px;
+    margin: 0;
+}
+
 /* Custom scrollbar */
 .chat-messages-container::-webkit-scrollbar {
     width: 8px;

@@ -1,11 +1,12 @@
-import { useState } from 'react';
 import './chatList.css';
 import Search from '../../UI/Search/Search';
 import { chats } from '../../Data/chats';
+import { useChat } from '../../Context/ChatContext';
 
 const ChatList = () => {
 
-    const [activeChat, setActiveChat] = useState(null);
+    const { activeChat, setActiveChat } = useChat();
+
 
     const getInitials = (name) => {
         return name
@@ -16,8 +17,8 @@ const ChatList = () => {
             .slice(0, 2);
     };
 
-    const handleChatClick = (chatId) => {
-        setActiveChat(chatId);
+    const handleChatClick = (chat) => {
+        setActiveChat(chat);
         // Add logic to open chat window
     };
 
@@ -51,7 +52,7 @@ const ChatList = () => {
                             <li 
                                 key={chat.id}
                                 className={`chat-item ${activeChat === chat.id ? 'active' : ''} ${chat.unread > 0 ? 'unread' : ''}`}
-                                onClick={() => handleChatClick(chat.id)}
+                                onClick={() => handleChatClick(chat)}
                             >
                                 <div className='chat-avatar'>
                                     {chat.avatar ? (
