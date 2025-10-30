@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios'
 import './Search.css';
+import { useChat } from '../../Context/ChatContext';
 
 const Search = () => {
+
+    const {activeChat, setActiveChat} = useChat()
 
     const BASE_URL = import.meta.env.VITE_API_BACKEND || "http://localhost:3000";
 
@@ -55,7 +58,20 @@ const Search = () => {
 
     const handleUserClick = (user) => {
         console.log('Selected user:', user);
-        // Add your logic here to start a chat with the selected user
+        
+        const chatData = {
+            id: user._id,
+            name: user.userName, 
+            avatar: user.profileImage, 
+            online: true, 
+            lastMessage: '',
+            time: 'Now',
+            unread: 0
+        };
+        
+        setActiveChat(chatData);
+        setSearchInput(''); 
+        setSearchResults([]); 
     }
 
     return (
@@ -93,7 +109,7 @@ const Search = () => {
                 {searchResults.map((user) => (
                     <div 
                         key={user._id} 
-                        className='user-item'
+                        className={`user-item ${activeChat?.id === user._id ? 'active' : ''}`}
                         onClick={() => handleUserClick(user)}
                     >
                         <img 
