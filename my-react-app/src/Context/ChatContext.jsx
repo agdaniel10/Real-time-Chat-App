@@ -4,6 +4,7 @@ const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
     const [activeChat, setActiveChat] = useState(null);
+     const [showChatWindow, setShowChatWindow] = useState(false);
     const [chats, setChats] = useState([]);
 
     const addChat = (newChat) => {
@@ -18,6 +19,8 @@ export const ChatProvider = ({ children }) => {
         <ChatContext.Provider value={{ 
             activeChat, 
             setActiveChat, 
+            showChatWindow,
+            setShowChatWindow,
             chats, 
             setChats,
             addChat 

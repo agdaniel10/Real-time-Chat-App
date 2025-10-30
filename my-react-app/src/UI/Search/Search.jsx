@@ -5,7 +5,7 @@ import { useChat } from '../../Context/ChatContext';
 
 const Search = () => {
 
-    const {activeChat, setActiveChat, chats, addChat} = useChat()
+    const {activeChat, setActiveChat, chats, addChat, setShowChatWindow } = useChat()
 
     const BASE_URL = import.meta.env.VITE_API_BACKEND || "http://localhost:3000";
 
@@ -71,6 +71,7 @@ const Search = () => {
         
         addChat(chatData)
         setActiveChat(chatData);
+        setShowChatWindow(true);
         setSearchInput(''); 
         setSearchResults([]);
     }

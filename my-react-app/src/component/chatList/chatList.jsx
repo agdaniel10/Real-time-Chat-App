@@ -4,7 +4,7 @@ import { useChat } from '../../Context/ChatContext';
 
 const ChatList = () => {
 
-    const { activeChat, setActiveChat, chats } = useChat();
+    const { activeChat, setActiveChat, chats, setShowChatWindow } = useChat();
 
     const getInitials = (name) => {
         return name
@@ -17,6 +17,7 @@ const ChatList = () => {
 
     const handleChatClick = (chat) => {
         setActiveChat(chat);
+        setShowChatWindow(true);
     };
 
     const handleNewChat = () => {

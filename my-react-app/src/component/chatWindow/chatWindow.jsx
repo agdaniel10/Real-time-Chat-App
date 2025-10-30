@@ -3,10 +3,9 @@ import './chatWindow.css';
 import socket from '../../socket';
 import { useChat } from '../../Context/ChatContext';
 
-
 const ChatWindow = () => {
 
-    const { activeChat } = useChat()
+    const { activeChat, showChatWindow, setShowChatWindow } = useChat();
 
     const [message, setMessage] = useState('');
     const [chats, setChats] = useState([]);
@@ -23,7 +22,6 @@ const ChatWindow = () => {
         };
     }, []);
 
-    // Auto-scroll to bottom when new messages arrive
     useEffect(() => {
         const container = document.querySelector('.chat-messages-container');
         if (container) {
@@ -50,7 +48,10 @@ const ChatWindow = () => {
             .slice(0, 2);
     };
 
-    // Show placeholder when no chat is selected
+    const handleBack = () => {
+        setShowChatWindow(false);
+    };
+
     if (!activeChat) {
         return (
             <div className='chat-window-main-container'>
@@ -66,8 +67,11 @@ const ChatWindow = () => {
     }
 
     return (
-        <div className='chat-window-main-container'>
+        <div className={`chat-window-main-container ${showChatWindow ? 'show-on-mobile' : ''}`}>
             <div className='chat-window-header'>
+                <button className='back-btn' onClick={handleBack}>
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                </button>
                 <div className='cw-profile'>
                     <div className='prof-photo-container'>
                         {activeChat.avatar ? (

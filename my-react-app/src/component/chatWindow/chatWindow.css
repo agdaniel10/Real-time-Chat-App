@@ -222,18 +222,44 @@
     font-size: 20px;
 }
 
+/* ... your existing styles ... */
+
+.back-btn {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.back-btn:hover {
+    background-color: #2C2C2E;
+}
+
+.back-btn:active {
+    background-color: #37373A;
+}
+
 @media screen and (max-width: 768px) {
     .chat-window-main-container {
+        display: none;
         width: 100%;
     }
     
-    .chat-message {
-        max-width: 80%;
+    .chat-window-main-container.show-on-mobile {
+        display: flex;
+    }
+    
+    .back-btn {
+        display: flex;
     }
 }
 
-@media screen and (max-width: 47rem) {
-    .chat-window-main-container {
-        display: none;
-    }
-}
