@@ -1,7 +1,16 @@
 import { useState } from 'react'
 import './Register.css'
-
+import AuthService from '../../Hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 const Register = () => {
+
+    const {
+        isLoading,
+        message,
+        error,
+        clearMessages,
+        handleRegister,
+    } = AuthService()
 
     const [formData, setFormData] = useState({
         userName: '',
@@ -10,7 +19,8 @@ const Register = () => {
     })
 
     const [showPassword, setShowPassword] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate()
+
 
     const handleChange = (e) => {
         const {name, value} = e.target
@@ -19,19 +29,23 @@ const Register = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsLoading(true);
+
+        // clear previous messages
+        clearMessages()
+
+        if (!formData.userName || !formData.email || !formData.password) {
+            alert("Please fill in all required fields");
+            return 
+        }
+
+        await handleRegister(formData)
         
         // Your registration logic here
         console.log('Form submitted:', formData);
-        
-        // Simulate API call
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
     }
 
     const handleLoginRedirect = () => {
-        // Navigate to login page
+        navigate('/login')
         console.log('Redirect to login');
     }
 
@@ -122,6 +136,10 @@ const Register = () => {
                             'Create Account'
                         )}
                     </button>
+
+                    {message && <p>{message}</p>}
+                    {error && <p>{error}</p>}
+
                 </form>
 
                 <div className='divider'>

@@ -2,69 +2,72 @@ import { useCallback, useState } from "react";
 import axios from "axios";
 import useLocalStorage from "./useLocalStorage";
 
-const VITE_API_BACKEND =
-    import.meta.env.VITE_API_URL ||
-    process.env.REACT_APP_API_URL ||
-    "http://localhost:3000";
+const VITE_API_BACKEND = "http://localhost:3000"; // adjust if needed
 
 const useApi = () => {
-    const [isLoading, setIsLoading] = useState(false)
-    const [message, setMessage] = useState('')
-    const [error, setError] = useState('')
-    const [authData, _setAuthData, removeAuthData] = useLocalStorage('kela-app_auth', null)
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [authData, _setAuthData, removeAuthData] = useLocalStorage("kela-app_auth", null);
 
-    const post = useCallback(
-        async (endpoint, data, config={}) => {
-            setIsLoading(true)
-            setMessage('')
-            setError('')
+  const post = useCallback(
+    async (endpoint, data, config = {}) => {
+      setIsLoading(true);
+      setMessage("");
+      setError("");
 
-            try{
+      try {
+        const headers = {
+          "Content-Type": "application/json",
+          ...config.headers,
+        };
 
-                const headers = {
-                    'Content-Type':'application/json',
-                    ...config.headers
-                };
+        // Attach token if available
+        if (authData?.token) {
+          headers["Authorization"] = `Bearer ${authData.token}`;
+        }
 
-                if (authData?.token) {
-                    headers['Authorization'] = `Bearer ${authData.token}`
-                }
+        const response = await axios.post(
+          `${VITE_API_BACKEND}${endpoint}`,
+          data,
+          {
+            headers,
+            withCredentials: true,
+            ...config,
+          }
+        );
 
-                const response = await axios.post(`${VITE_API_BACKEND}${endpoint}`, data, {
-                    headers, 
-                    withCredentials: true,
-                    ...config
-                })
+        setMessage(response.data?.message || "Request successful");
+        return response.data;
 
-                setMessage(response.data?.message || 'Request successful')
-                return response?.data
+      } catch (err) {
+        const errorMessage =
+          err.response?.data?.message ||
+          err.response?.data?.error ||
+          "Request failed";
 
-            }catch(error) {
-                const errorMessage = 
-                    error.response?.data?.message || 
-                    error.response?.data?.error ||
-                    'Request failed'
-                setMessage(errorMessage)
+        setError(errorMessage);
 
-                if (error.response?.status === 401) {
-                    removeAuthData()
-                }
+        // If token expired or unauthorized, clear stored auth data
+        if (err.response?.status === 401) {
+          removeAuthData();
+        }
 
-                throw error
-            }finally {
-                setIsLoading(false)
-            }
-        },
-        [authData, removeAuthData]
-    );
+        throw err;
 
-    const clearMessage = useCallback(() => {
-        setMessage('')
-        setError('')
-    }, [])
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [authData, removeAuthData]
+  );
 
-    return { isLoading, message, error, post, clearMessage }
-}
+  const clearMessages = useCallback(() => {
+    setMessage("");
+    setError("");
+  }, []);
+
+  return { isLoading, message, error, post, clearMessages };
+};
 
 export default useApi;
-
