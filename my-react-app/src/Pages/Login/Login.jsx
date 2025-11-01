@@ -1,15 +1,26 @@
 import { useState } from 'react'
 import './Login.css'
+import AuthService from '../../Hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+
+    const {
+        isLoading,
+        message,
+        error,
+        clearMessages,
+        handleLogin
+    } = AuthService()
 
     const [formData, setFormData] = useState({
         userName: '',
         password: ''
     })
 
+    const navigate = useNavigate()
+
     const [showPassword, setShowPassword] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
 
     const handleChange = (e) => {
@@ -19,20 +30,23 @@ const Login = () => {
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-        setIsLoading(true);
+
+        // clear previous messages
+        clearMessages()
+
+        if (!formData.userName || !formData.password) {
+            alert('All fields required')
+        }
+
+        await handleLogin(formData);
         
         // Your login logic here
         console.log('Login submitted:', formData);
-        
-        // Simulate API call
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
     }
 
     const handleRegisterRedirect = () => {
         // Navigate to register page
-        console.log('Redirect to register');
+        navigate('/register')
     }
 
     const handleForgotPassword = () => {
@@ -129,6 +143,9 @@ const Login = () => {
                         )}
                     </button>
                 </form>
+
+                {error && <p>{error}</p> }
+                {message && <p>{message}</p> }
 
                 <div className='divider'>
                     <span>or</span>

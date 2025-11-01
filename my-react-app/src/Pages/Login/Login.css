@@ -301,15 +301,15 @@
         height: 60px;
         font-size: 30px;
     }
-
-    .form-options {
-        flex-direction: column;
-        gap: 16px;
-        align-items: flex-start;
-    }
 }
 
 @media screen and (max-width: 480px) {
+    .form-options {
+        margin-top: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
     .login-main-container {
         padding: 16px;
     }
