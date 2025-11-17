@@ -4,7 +4,7 @@ import { useChat } from '../../Context/ChatContext';
 
 const ChatList = () => {
 
-    const { activeChat, setActiveChat, chats, setShowChatWindow } = useChat();
+    const { activeChat, setActiveChat, conversations, setShowChatWindow } = useChat();
 
     const getInitials = (name) => {
         return name
@@ -35,7 +35,7 @@ const ChatList = () => {
             </div>
             
             <div className='chats-list'>
-                {chats.length === 0 ? (
+                {conversations.length === 0 ? (
                     <div className='empty-chats'>
                         <div className='empty-chats-icon'>
                             <ion-icon name="chatbubbles-outline"></ion-icon>
@@ -45,7 +45,7 @@ const ChatList = () => {
                     </div>
                 ) : (
                     <ul>
-                        {chats.map(chat => (
+                        {conversations.map(chat => (
                             <li 
                                 key={chat.id}
                                 className={`chat-item ${activeChat?.id === chat.id ? 'active' : ''} ${chat.unread > 0 ? 'unread' : ''}`}

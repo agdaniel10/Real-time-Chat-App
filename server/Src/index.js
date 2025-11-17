@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import authRouter from './Routes/authRoutes.js';
 import userRouter from './Routes/userRoutes.js'
 import { saveMessage } from './Controllers/messageController.js'
+import chatHistoryRoute from './Routes/chatHistoryRoutes.js'
 
 dotenv.config();
 
@@ -46,11 +47,15 @@ io.on('connection', (socket) => {
   socket.on('send_message', async (data) => {
     const { sender, receiver, text } = data;
 
+     console.log("Received message on server:", data);
+
     // Save message into DB
     const savedMessage = await saveMessage({ sender, receiver, text });
 
-    // Emit to receiver's room
-    io.to(receiver).emit('receive_message', savedMessage);
+    if (saveMessage) {
+        // Emit to receiver's room
+        io.to(receiver).emit('receive_message', savedMessage);
+    }
   });
 
   // Disconnect
@@ -62,6 +67,7 @@ io.on('connection', (socket) => {
 // REST API Routes
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
+app.use('/api/chat', chatHistoryRoute)
 
 server.listen(3000, () => {
   console.log('Server running on port 3000');

@@ -4,14 +4,14 @@ const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
     const [activeChat, setActiveChat] = useState(null);
-     const [showChatWindow, setShowChatWindow] = useState(false);
-    const [chats, setChats] = useState([]);
+    const [showChatWindow, setShowChatWindow] = useState(false);
+    const [conversations, setConversations] = useState([])
 
-    const addChat = (newChat) => {
-        const chatExists = chats.some(chat => chat.id === newChat.id);
+    const addConversations = (newChat) => {
+        const chatExists = conversations.some(chat => chat.id === newChat.id);
         
         if (!chatExists) {
-            setChats(prev => [newChat, ...prev]);
+            setConversations(prev => [newChat, ...prev])
         }
     };
 
@@ -21,9 +21,9 @@ export const ChatProvider = ({ children }) => {
             setActiveChat, 
             showChatWindow,
             setShowChatWindow,
-            chats, 
-            setChats,
-            addChat 
+            conversations,
+            setConversations,
+            addConversations
         }}>
             {children}
         </ChatContext.Provider>

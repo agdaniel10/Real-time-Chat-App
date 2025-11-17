@@ -1,27 +1,93 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './chatWindow.css';
 import socket from '../../socket';
 import { useChat } from '../../Context/ChatContext';
 
 const ChatWindow = () => {
+    const authData = JSON.parse(localStorage.getItem('kela-app_auth'));
+    const myUserId = authData?.user?._id;
+
+    if (!myUserId) {
+        console.error('User Id not found. Please login')
+    }
 
     const { activeChat, showChatWindow, setShowChatWindow } = useChat();
 
     const [message, setMessage] = useState('');
     const [chats, setChats] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const VITE_API_BACKEND = import.meta.env.VITE_API_BACKEND || 'http://localhost:3000';
 
     useEffect(() => {
-        socket.on('receive_message', (data) => {
-            if (data.senderId !== socket.id) {
-                setChats(prev => [...prev, { ...data, isSender: false }]);
+        if (myUserId) {
+            socket.emit('register', myUserId);
+        }
+    }, [myUserId]);
+
+    // Fetch chat history
+    const chatHistoryData = async () => {
+        if (!activeChat?._id || !myUserId) return;
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await axios.get(
+                `${VITE_API_BACKEND}/api/chat/chathistory/${myUserId}/${activeChat._id}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user?.token}`
+                    }
+                }
+            );
+
+            if (response.data.status === 'success') {
+                const formattedChats = response.data.data.map(msg => ({
+                    ...msg,
+                    isSender: msg.sender === myUserId
+                }));
+                setChats(formattedChats);
             }
-        });
+
+        } catch(error) {
+            console.error('Error loading chat history: ', error);
+            setError(error.response?.data?.error || 'Failed to load chat history');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Load chat history when activeChat changes
+    useEffect(() => {
+        if (activeChat?._id) {
+            setChats([]);
+            chatHistoryData();
+        }
+    }, [activeChat?._id]);
+
+    // Listen for incoming messages
+    useEffect(() => {
+        const handleReceiveMessage = (data) => {
+            if (data.sender === activeChat?._id) {
+                setChats(prev => [...prev, {
+                    ...data,
+                    isSender: false
+                }]);
+            }
+        };
+
+        socket.on('receive_message', handleReceiveMessage);
 
         return () => {
-            socket.off('receive_message');
+            socket.off('receive_message', handleReceiveMessage);
         };
-    }, []);
+    }, [activeChat?._id, myUserId]);
 
+    // Auto-scroll
     useEffect(() => {
         const container = document.querySelector('.chat-messages-container');
         if (container) {
@@ -30,10 +96,23 @@ const ChatWindow = () => {
     }, [chats]);
 
     const sendMessage = () => {
-        if (message.trim()) {
-            const data = { text: message, senderId: socket.id };
-            setChats(prev => [...prev, { ...data, isSender: true }]);
-            socket.emit("send_message", data);
+        if (message.trim() && activeChat) {
+            const data = {
+                sender: myUserId,
+                receiver: activeChat.id,
+                text: message
+            };
+
+            console.log('Sending message:', data);
+
+            setChats(prev => [...prev, {
+                ...data,
+                isSender: true,
+                timestamp: new Date()
+            }]);
+
+            console.log("Sending message:", data);
+            socket.emit('send_message', data);
             setMessage('');
         }
     };
@@ -91,9 +170,15 @@ const ChatWindow = () => {
             </div>
 
             <div className='chat-messages-container'>
-                {chats.map((chat, index) => (
+                {loading && (
+                    <div className='loading-messages'>Loading messages...</div>
+                )}
+                {error && (
+                    <div className='error-messages'>{error}</div>
+                )}
+                {!loading && chats.map((chat, index) => (
                     <div 
-                        key={index} 
+                        key={chat._id || index}
                         className={`chat-message ${chat.isSender ? 'sender' : 'receiver'}`}
                     >
                         <p>{chat.text}</p>
