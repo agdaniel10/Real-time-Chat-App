@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import axios from "axios";
 import useLocalStorage from "./useLocalStorage";
 
-const VITE_API_BACKEND = "http://localhost:3000"; // adjust if needed
+const VITE_API_BACKEND = "http://localhost:3000";
 
 const useApi = () => {
   const [isLoading, setIsLoading] = useState(false);

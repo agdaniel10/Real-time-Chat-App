@@ -60,7 +60,7 @@ const Search = () => {
         console.log('Selected user:', user);
         
         const chatData = {
-            id: user._id,
+            _id: user._id,
             name: user.userName, 
             avatar: user.profileImage, 
             online: true, 

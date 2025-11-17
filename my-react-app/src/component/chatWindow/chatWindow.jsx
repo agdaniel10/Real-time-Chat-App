@@ -46,6 +46,7 @@ const ChatWindow = () => {
             );
 
             if (response.data.status === 'success') {
+                console.log(response.data.data)
                 const formattedChats = response.data.data.map(msg => ({
                     ...msg,
                     isSender: msg.sender === myUserId
@@ -97,9 +98,24 @@ const ChatWindow = () => {
 
     const sendMessage = () => {
         if (message.trim() && activeChat) {
+
+            const recieverId = activeChat._id || activeChat.id
+            console.log('the received user id for the receiver: ', recieverId)
+
+            if (recieverId === myUserId) {
+                console.error('Cannot send message to yourself!')
+                alert('You cannot send messages to yourself')
+                return
+            }
+
+            if (!recieverId) {
+                console.error('Cannot send message: reciever ID not found')
+                return
+            }
+
             const data = {
                 sender: myUserId,
-                receiver: activeChat.id,
+                receiver: recieverId,
                 text: message
             };
 
