@@ -7,6 +7,7 @@ import { useChat } from '../../Context/ChatContext';
 const ChatWindow = () => {
     const authData = JSON.parse(localStorage.getItem('kela-app_auth'));
     const myUserId = authData?.user?._id;
+    const token = authData?.token
 
     if (!myUserId) {
         console.error('User Id not found. Please login')
@@ -40,7 +41,7 @@ const ChatWindow = () => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${user?.token}`
+                        'Authorization': `Bearer ${token}`
                     }
                 }
             );
@@ -100,18 +101,14 @@ const ChatWindow = () => {
         if (message.trim() && activeChat) {
 
             const recieverId = activeChat._id || activeChat.id
-            console.log('the received user id for the receiver: ', recieverId)
-
-            if (recieverId === myUserId) {
-                console.error('Cannot send message to yourself!')
-                alert('You cannot send messages to yourself')
-                return
-            }
 
             if (!recieverId) {
                 console.error('Cannot send message: reciever ID not found')
                 return
             }
+
+            console.log('the reciever id: ', recieverId);
+            console.log('The sender Id: ', myUserId)
 
             const data = {
                 sender: myUserId,

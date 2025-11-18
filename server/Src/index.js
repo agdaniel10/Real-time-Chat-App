@@ -44,19 +44,29 @@ io.on('connection', (socket) => {
   });
 
   // Handle sending message
-  socket.on('send_message', async (data) => {
-    const { sender, receiver, text } = data;
+    socket.on('send_message', async (data) => {
+        const { sender, receiver, text } = data;
+        console.log('Saving message:', data);
 
-     console.log("Received message on server:", data);
+        try {
+            // Save message into DB
+            const savedMessage = await saveMessage({ sender, receiver, text });
+            console.log('Message saved:', savedMessage);
 
-    // Save message into DB
-    const savedMessage = await saveMessage({ sender, receiver, text });
+            if (savedMessage) {
+                // Emit to receiver's room
+                console.log('Emitting to receiver:', receiver);
+                io.to(receiver).emit('receive_message', savedMessage);
 
-    if (saveMessage) {
-        // Emit to receiver's room
-        io.to(receiver).emit('receive_message', savedMessage);
-    }
-  });
+                io.to(sender).emit('message_sent', savedMessage);
+            } else {
+                console.error('Failed to save message');
+            }
+        } catch (error) {
+            console.error('Error in send_message:', error);
+            socket.emit('message_error', { error: 'Failed to send message' });
+        }
+    });
 
   // Disconnect
   socket.on('disconnect', () => {

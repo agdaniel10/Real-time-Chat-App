@@ -34,7 +34,6 @@ const AuthService = () => {
 
       const { data } = result;
       const { token, user } = data;
-      console.log("=======", token, user )
 
       if (token && user) {
         setAuthData({ token, user });
