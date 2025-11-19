@@ -17,16 +17,8 @@ const ChatList = () => {
     };
 
     const handleChatClick = (chat) => {
-        console.log('📋 ChatList - Clicked chat:', chat);
-        console.log('📋 ChatList - Setting activeChat to ID:', chat._id);
         setActiveChat(chat);
-        console('I feet be say na this werey the run this ========== P: ', chat)
-        console('I feet be say na this werey the run this 222222 ========== P: ', setActiveChat(chat))
         setShowChatWindow(true);
-    };
-
-    const handleNewChat = () => {
-        console.log('Start new chat');
     };
 
     return (

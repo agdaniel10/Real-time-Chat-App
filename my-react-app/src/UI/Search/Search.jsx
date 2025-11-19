@@ -42,10 +42,6 @@ const Search = () => {
             const filteredResults = Array.isArray(result) 
                 ? result.filter(user => user._id !== myUserId) 
                 : [];
-
-            console.log('Search results (filtered):', filteredResults);
-            console.log(' My ID used for filtering:', myUserId);
-
             setSearchResults(filteredResults);
             setHasSearched(true);
         } catch (error) {
@@ -67,22 +63,9 @@ const Search = () => {
     }
 
     const handleUserClick = (user) => {
-        console.log('🔍 Clicked user object:', user);
-        console.log('🔍 User ID being set:', user._id);
-
-        console.log('═══════════════════════════════');
-        console.log('🖱️  USER CLICKED');
-        console.log('═══════════════════════════════');
-        console.log('Full user object:', user);
-        console.log('User ID:', user._id);
-        console.log('User name:', user.userName);
-        console.log('═══════════════════════════════');
         
         const authData = JSON.parse(localStorage.getItem('kela-app_auth'));
         const myUserId = authData?.user?._id;
-
-        console.log('SEARCH - My ID:', myUserId);
-        console.log('SEARCH - Selected user ID:', user._id);
         
         if (user._id === myUserId) {
             console.error('CANNOT SELECT YOURSELF!');
@@ -99,9 +82,6 @@ const Search = () => {
             time: 'Now',
             unread: 0
         };
-
-        console.log(' SEARCH - Chat data created:', chatData);
-        
         addConversations(chatData);
         setActiveChat(chatData);
         setShowChatWindow(true);

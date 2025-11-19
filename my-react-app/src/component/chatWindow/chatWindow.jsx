@@ -79,15 +79,6 @@ const ChatWindow = () => {
         const isForMe = String(data.receiver) === String(myUserId);
         const isFromActiveChat = String(data.sender) === String(activeChat);
 
-        console.log("🔎 MESSAGE RECEIVED --> DISPLAY?", {
-            isForMe,
-            isFromActiveChat,
-            activeChat: activeChat?._id,
-            myUserId,
-            sender: data.sender,
-            receiver: data.receiver
-        });
-
         if (isForMe && isFromActiveChat) {
             setChats(prev => [
                 ...prev,
@@ -124,11 +115,6 @@ const ChatWindow = () => {
                 console.error('Cannot send message: reciever ID not found')
                 return
             }
-
-            console.log('💬 SENDING MESSAGE:');
-            console.log('   My ID:', myUserId);
-            console.log('   Receiver ID:', activeChat._id);
-            console.log('   Full activeChat:', activeChat);
             
             // CRITICAL CHECK
             if (activeChat._id === myUserId) {
@@ -136,11 +122,7 @@ const ChatWindow = () => {
                 alert('Error: Cannot send message to yourself. Please select a different user.');
                 return; // EXIT EARLY
             }
-        
-
-
-            console.log('the reciever id: ', recieverId);
-            console.log('The sender Id: ', myUserId)
+    
 
             const data = {
                 sender: myUserId,
