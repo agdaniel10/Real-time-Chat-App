@@ -7,6 +7,7 @@ const ChatList = () => {
     const { activeChat, setActiveChat, conversations, setShowChatWindow } = useChat();
 
     const getInitials = (name) => {
+        if (!name) return '??';
         return name
             .split(' ')
             .map(word => word[0])
@@ -16,7 +17,11 @@ const ChatList = () => {
     };
 
     const handleChatClick = (chat) => {
+        console.log('📋 ChatList - Clicked chat:', chat);
+        console.log('📋 ChatList - Setting activeChat to ID:', chat._id);
         setActiveChat(chat);
+        console('I feet be say na this werey the run this ========== P: ', chat)
+        console('I feet be say na this werey the run this 222222 ========== P: ', setActiveChat(chat))
         setShowChatWindow(true);
     };
 
@@ -47,15 +52,17 @@ const ChatList = () => {
                     <ul>
                         {conversations.map(chat => (
                             <li 
-                                key={chat.id}
-                                className={`chat-item ${activeChat?.id === chat.id ? 'active' : ''} ${chat.unread > 0 ? 'unread' : ''}`}
+                                key={chat._id} 
+                                className={`chat-item ${activeChat?._id === chat._id ? 'active' : ''} ${chat.unread > 0 ? 'unread' : ''}`}
                                 onClick={() => handleChatClick(chat)}
                             >
                                 <div className='chat-avatar'>
                                     {chat.avatar ? (
                                         <img src={chat.avatar} alt={chat.name} />
                                     ) : (
-                                        getInitials(chat.name)
+                                        <div className='avatar-initials'>
+                                            {getInitials(chat.name)}
+                                        </div>
                                     )}
                                 </div>
                                 {chat.online && <div className='online-indicator'></div>}
@@ -66,7 +73,7 @@ const ChatList = () => {
                                         <span className='chat-time'>{chat.time}</span>
                                     </div>
                                     <div className='chat-preview'>
-                                        <span className='chat-last-message'>{chat.lastMessage}</span>
+                                        <span className='chat-last-message'>{chat.lastMessage || 'No messages yet'}</span>
                                         {chat.unread > 0 && (
                                             <span className='unread-badge'>{chat.unread}</span>
                                         )}
