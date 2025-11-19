@@ -3,6 +3,8 @@ import Message from "../Models/messageModel.js";
 const chatHistory = async (req, res) => {
     const { user1, user2 } = req.params;
 
+    console.log('Chat history request: ', {user1, user2})
+
     try {
         const messages = await Message.find({
             $or: [
@@ -10,6 +12,8 @@ const chatHistory = async (req, res) => {
                 { sender: user2, receiver: user1 } 
             ]
         }).sort({ timestamp: 1 });
+
+        console.log('messages found: ', messages.length)
 
         res.status(200).json({
             status: 'success',

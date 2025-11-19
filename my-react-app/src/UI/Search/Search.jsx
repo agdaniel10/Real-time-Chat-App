@@ -35,8 +35,18 @@ const Search = () => {
                 `${BASE_URL}/api/users/searchUserName?userName=${encodeURIComponent(value)}`
             )
 
-            const result = response.data?.data
-            setSearchResults(Array.isArray(result) ? result : []);
+            const result = response.data?.data;
+            const authData = JSON.parse(localStorage.getItem('kela-app_auth'));
+            const myUserId = authData?.user?._id;
+
+            const filteredResults = Array.isArray(result) 
+                ? result.filter(user => user._id !== myUserId) 
+                : [];
+
+            console.log('Search results (filtered):', filteredResults);
+            console.log(' My ID used for filtering:', myUserId);
+
+            setSearchResults(filteredResults);
             setHasSearched(true);
         } catch (error) {
             console.error('Search error: ', error);
@@ -57,7 +67,28 @@ const Search = () => {
     }
 
     const handleUserClick = (user) => {
-        console.log('Selected user:', user);
+        console.log('🔍 Clicked user object:', user);
+        console.log('🔍 User ID being set:', user._id);
+
+        console.log('═══════════════════════════════');
+        console.log('🖱️  USER CLICKED');
+        console.log('═══════════════════════════════');
+        console.log('Full user object:', user);
+        console.log('User ID:', user._id);
+        console.log('User name:', user.userName);
+        console.log('═══════════════════════════════');
+        
+        const authData = JSON.parse(localStorage.getItem('kela-app_auth'));
+        const myUserId = authData?.user?._id;
+
+        console.log('SEARCH - My ID:', myUserId);
+        console.log('SEARCH - Selected user ID:', user._id);
+        
+        if (user._id === myUserId) {
+            console.error('CANNOT SELECT YOURSELF!');
+            alert('You cannot chat with yourself!');
+            return;
+        }
         
         const chatData = {
             _id: user._id,
@@ -68,8 +99,10 @@ const Search = () => {
             time: 'Now',
             unread: 0
         };
+
+        console.log(' SEARCH - Chat data created:', chatData);
         
-        addConversations(chatData)
+        addConversations(chatData);
         setActiveChat(chatData);
         setShowChatWindow(true);
         setSearchInput(''); 
@@ -121,7 +154,7 @@ const Search = () => {
                 {searchResults.map((user) => (
                     <div 
                         key={user._id} 
-                        className={`user-item ${activeChat?.id === user._id ? 'active' : ''}`}
+                        className={`user-item ${activeChat?._id === user._id ? 'active' : ''}`}
                         onClick={() => handleUserClick(user)}
                     >
                         <img 
